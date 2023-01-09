@@ -62,4 +62,7 @@ pipeline {
     }
              
   }
+  environment {
+    mail = ''
+  }
 }
