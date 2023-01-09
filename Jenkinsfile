@@ -54,13 +54,11 @@ pipeline {
     }
 
     stage('Notification') {
-      
-
+   
       steps {
         mail(subject: 'Mail Notifications', body: 'mail', cc: 'js_zitouni@esi.dz', to: 'js_zitouni@esi.dz')
       }
     }
              
   }
-
-
+}
