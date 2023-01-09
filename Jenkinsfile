@@ -2,8 +2,7 @@ pipeline {
   agent any
   stages {
     
-    stage('build') {
-      
+    stage('build') 
       steps {
         bat 'gradle build'
         bat 'gradle javadoc'
@@ -61,22 +60,7 @@ pipeline {
         mail(subject: 'Mail Notifications', body: 'mail', cc: 'js_zitouni@esi.dz', to: 'js_zitouni@esi.dz'
       }
     }
-
-              post {
-        failure {
-          script {
-            mail= "Echec dans l’une des phases du pipeline"
-          }
-
-        }
-
-        success {
-          script {
-            mail="Les phases du pipeline ont été effectuées avec succès"
-          }
-        }
-         
-      }
+             
   }
 
 }
