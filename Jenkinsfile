@@ -1,39 +1,9 @@
 pipeline {
   agent any
   stages {
-     post {
-        failure {
-          script {
-            mail= "Echec dans l’une des phases du pipeline"
-          }
-
-        }
-
-        success {
-          script {
-            mail="Les phases du pipeline ont été effectuées avec succès"
-          }
-        }
-         
-      }
     
     stage('build') {
-      post {
-        failure {
-          script {
-            mail= "Echec dans l’une des phases du pipeline"
-          }
-
-        }
-
-        success {
-          script {
-            mail="Les phases du pipeline ont été effectuées avec succès"
-          }
-
-        }
-
-      }
+      
       steps {
         bat 'gradle build'
         bat 'gradle javadoc'
@@ -101,6 +71,9 @@ pipeline {
          
       }
 
+      steps {
+        mail(subject: 'Mail Notifications', body: mail, cc: 'js_zitouni@esi.dz', to: 'js_zitouni@esi.dz'
+      }
     }
 
   }
