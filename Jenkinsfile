@@ -62,7 +62,7 @@ pipeline {
 
     stage('Slack Notification') {
       steps {
-        slackSend(token: 'TSGEF9MGR/B04EKU8G31A/1s4jywo6tECegVgcgnVM5qIz', baseUrl: 'https://hooks.slack.com/services/', channel: '#my_channel', message: 'notification for JenkinsOGL has been successfully sent to slack')
+        slackSend(baseUrl: 'https://hooks.slack.com/services', channel: '#my_channel', token: 'TSGEF9MGR/B04EKU8G31A/1s4jywo6tECegVgcgnVM5qIz', message: 'notification for JenkinsOGL has been successfully sent to slack')
       }
     }
 
