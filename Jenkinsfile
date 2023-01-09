@@ -3,6 +3,22 @@ pipeline {
   stages {
     
     stage('build') {
+      post {
+        failure {
+          script {
+            mail= "Pipeline termine avec échec "
+          }
+
+        }
+
+        success {
+          script {
+            mail="Pipeline termine avec succes "
+          }
+
+        }
+
+      }
       steps {
         bat 'gradle build'
         bat 'gradle javadoc'
