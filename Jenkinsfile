@@ -14,7 +14,7 @@ pipeline {
 
     stage('Mail Notification') {
       steps {
-        mail(subject: 'TP Jenkins notification', body: mail, cc: 'js_zitouni@esi.dz')
+        mail(subject: 'notification', body: 'mail', cc: 'js_zitouni@esi.dz')
       }
     }
 
@@ -50,11 +50,12 @@ pipeline {
       }
       steps {
         bat 'gradle publish'
+        mail(subject: 'Déploiement notifications', body: mail, cc: 'js_zitouni@esi.dz',from:'js_zitouni@esi.dz',to:'js_zitouni@esi.dz')
       }
     }
 
     stage('Notification') {
-   
+     
       steps {
         mail(subject: 'Mail Notifications', body: mail, cc: 'js_zitouni@esi.dz')
       }
