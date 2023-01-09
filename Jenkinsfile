@@ -44,12 +44,12 @@ pipeline {
         success {
           script {
             mail="Déploiement avec succès"
-            notifyEvents message:'Déploiement avec succès', token: 'HOEOr4tfxF2jQnspzWrTo5hk1rLy1yVZ'
           }
         }
       }
       steps {
         bat 'gradle publish'
+        notifyEvents message:'Déploiement avec succès', token: 'HOEOr4tfxF2jQnspzWrTo5hk1rLy1yVZ'
         mail(subject: 'Déploiement notifications', body: mail, cc: 'js_zitouni@esi.dz',from:'js_zitouni@esi.dz',to:'js_zitouni@esi.dz')
       }
     }
@@ -62,7 +62,5 @@ pipeline {
     }
              
   }
-  environment {
-    mail = ''
-  }
+
 }
