@@ -71,5 +71,7 @@ pipeline {
     }
              
   }
-
+environment {
+    mail = ''
+  }
 }
