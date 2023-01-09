@@ -5,14 +5,14 @@ pipeline {
       post {
         failure {
           script {
-            mail= " Build termine avec échec "
+            mail= "Echec dans l’une des phases du pipeline"
           }
 
         }
 
         success {
           script {
-            mail=" Build termine avec succes "
+            mail="Les phases du pipeline ont été effectuées avec succès"
           }
 
         }
@@ -55,15 +55,36 @@ pipeline {
     }
 
     stage('Deploy') {
+       post {
+        success {
+          script {
+            mail="Déploiement avec succès"
+            notifyEvents message:'Déploiement avec succès', token: 'HOEOr4tfxF2jQnspzWrTo5hk1rLy1yVZ'
+          }
+        }
+      }
       steps {
         bat 'gradle publish'
       }
     }
 
     stage('Notification') {
-      steps {
-        notifyEvents message:'Notification sent', token: 'HOEOr4tfxF2jQnspzWrTo5hk1rLy1yVZ'
+       post {
+        failure {
+          script {
+            mail= "Echec dans l’une des phases du pipeline"
+          }
+
+        }
+
+        success {
+          script {
+            mail="Les phases du pipeline ont été effectuées avec succès"
+          }
+        }
+         
       }
+
     }
 
   }
