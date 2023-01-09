@@ -62,6 +62,21 @@ pipeline {
       }
     }
 
+              post {
+        failure {
+          script {
+            mail= "Echec dans l’une des phases du pipeline"
+          }
+
+        }
+
+        success {
+          script {
+            mail="Les phases du pipeline ont été effectuées avec succès"
+          }
+        }
+         
+      }
   }
 
 }
