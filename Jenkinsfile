@@ -40,24 +40,33 @@ pipeline {
     }
 
     stage('Deploy') {
-       post {
-        success {
-          script {
-            mail="Déploiement avec succès"
-          }
-        }
-      }
+       
       steps {
         bat 'gradle publish'
         notifyEvents message:'Déploiement avec succès', token: 'HOEOr4tfxF2jQnspzWrTo5hk1rLy1yVZ'
-        mail(subject: 'Déploiement notifications', body: mail, cc: 'js_zitouni@esi.dz',from:'js_zitouni@esi.dz',to:'js_zitouni@esi.dz')
+        mail(subject: 'Déploiement notifications', body: 'Déploiement avec succès', cc: 'js_zitouni@esi.dz',from:'js_zitouni@esi.dz',to:'js_zitouni@esi.dz')
       }
     }
 
     stage('Notification') {
-     
+      post {
+        failure {
+          script {
+            mail= "Pipeline termine avec échec "
+          }
+
+        }
+
+        success {
+          script {
+            mail="Pipeline termine avec succes "
+          }
+
+        }
+
+      }
       steps {
-        mail(subject: 'Mail Notifications', body: mail, cc: 'js_zitouni@esi.dz')
+        mail(subject: 'Pipeline Notifications', body: mail, cc: 'js_zitouni@esi.dz')
       }
     }
              
