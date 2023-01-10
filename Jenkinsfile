@@ -2,7 +2,7 @@ pipeline {
   agent any
   stages {
     
-    stage('build') {
+    stage('test') {
       post {
         failure {
           script {
@@ -20,22 +20,12 @@ pipeline {
 
       }
       steps {
-        bat 'gradle build'
-        bat 'gradle javadoc'
-        archiveArtifacts 'build/libs/*.jar'
-
         junit(testResults: 'build/test-results/test/*.xml', skipPublishingChecks: true, allowEmptyResults: true)
-      }
-    }
-
-    stage('Mail Notification') {
-      steps {
-        mail(subject: 'notification', body: 'mail', cc: 'js_zitouni@esi.dz')
+        cucumber 'reports/*json'
       }
     }
 
     stage('Code Analysis') {
-      parallel {
         stage('Code Analysis') {
           steps {
             withSonarQubeEnv('sonar') {
@@ -45,15 +35,16 @@ pipeline {
             waitForQualityGate true
           }
         }
-
-        stage('Test Reporting') {
-          steps {
-            cucumber 'reports/*json'
-          }
-        }
-
+    }
+    
+    stage('build') {
+      steps {
+        bat 'gradle build'
+        bat 'gradle javadoc'
+        archiveArtifacts 'build/libs/*.jar'
       }
     }
+
 
     stage('Deploy') {
        
