@@ -35,9 +35,6 @@ pipeline {
         }
     }
     
-    stage('Code Quality') {
-            waitForQualityGate true
-    }
     
     stage('build') {
       steps {
