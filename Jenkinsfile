@@ -65,22 +65,7 @@ pipeline {
     }
 
     stage('Notification') {
-      post {
-        failure {
-          script {
-            mail= "Pipeline termine avec échec "
-          }
-
-        }
-
-        success {
-          script {
-            mail="Pipeline termine avec succes "
-          }
-
-        }
-
-      }
+     
       steps {
         mail(subject: 'Pipeline Notifications', body: mail, cc: 'js_zitouni@esi.dz')
       }
