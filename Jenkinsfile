@@ -8,14 +8,6 @@ pipeline {
           script {
             mail= "Pipeline termine avec échec "
           }
-
-        }
-
-        success {
-          script {
-            mail="Pipeline termine avec succes "
-          }
-
         }
 
       }
@@ -25,12 +17,14 @@ pipeline {
         archiveArtifacts 'build/libs/*.jar'
 
         junit(testResults: 'build/test-results/test/*.xml', skipPublishingChecks: true, allowEmptyResults: true)
+        mail(subject: 'Pipeline Notifications', body: mail, cc: 'js_zitouni@esi.dz')
       }
     }
 
     stage('Mail Notification') {
       steps {
         mail(subject: 'notification', body: 'mail', cc: 'js_zitouni@esi.dz')
+        mail(subject: 'Pipeline Notifications', body: mail, cc: 'js_zitouni@esi.dz')
       }
     }
 
@@ -40,6 +34,7 @@ pipeline {
           steps {
             withSonarQubeEnv('sonar') {
               bat(script: 'gradle sonarqube', returnStatus: true)
+              mail(subject: 'Pipeline Notifications', body: mail, cc: 'js_zitouni@esi.dz')
             }
 
             waitForQualityGate true
@@ -49,6 +44,7 @@ pipeline {
         stage('Test Reporting') {
           steps {
             cucumber 'reports/*json'
+            mail(subject: 'Pipeline Notifications', body: mail, cc: 'js_zitouni@esi.dz')
           }
         }
 
@@ -60,7 +56,8 @@ pipeline {
       steps {
         bat 'gradle publish'
         notifyEvents message:'Déploiement avec succès', token: 'HOEOr4tfxF2jQnspzWrTo5hk1rLy1yVZ'
-        mail(subject: 'Déploiement notifications', body: 'Déploiement avec succès', cc: 'js_zitouni@esi.dz',from:'js_zitouni@esi.dz',to:'js_zitouni@esi.dz')
+        mail(subject: 'Pipeline Notifications', body: mail, cc: 'js_zitouni@esi.dz')
+        mail(subject: 'Déploiement notifications', body: 'Déploiement avec succès', cc: 'js_zitouni@esi.dz')
       }
     }
 
