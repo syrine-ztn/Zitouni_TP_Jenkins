@@ -1,73 +1,73 @@
 pipeline {
   agent any
   stages {
-    stage('build') {
+    
+    stage('test') {
       post {
         failure {
           script {
-            mail= " Build termine avec échec "
+            mail= "Pipeline termine avec échec "
           }
 
         }
 
         success {
           script {
-            mail=" Build termine avec succes "
+            mail="Pipeline termine avec succes "
           }
 
         }
 
       }
       steps {
-        bat 'gradle build'
-        bat 'gradle javadoc'
-        archiveArtifacts 'build/libs/*.jar'
-
         junit(testResults: 'build/test-results/test/*.xml', skipPublishingChecks: true, allowEmptyResults: true)
-      }
-    }
-
-    stage('Mail Notification') {
-      steps {
-        mail(subject: 'TP Jenkins notification', body: mail, cc: 'js_zitouni@esi.dz')
+        cucumber 'reports/*json'
       }
     }
 
     stage('Code Analysis') {
-      parallel {
-        stage('Code Analysis') {
           steps {
             withSonarQubeEnv('sonar') {
               bat(script: 'gradle sonarqube', returnStatus: true)
             }
-
-            waitForQualityGate true
-          }
         }
-
-        stage('Test Reporting') {
+    }
+    
+    stage('Code Quality') {
           steps {
-            cucumber 'reports/*json'
-          }
+            withSonarQubeEnv('sonar') {
+              waitForQualityGate true
+            }
         }
-
+    }
+    
+    stage('build') {
+      steps {
+        bat 'gradle build'
+        bat 'gradle javadoc'
+        archiveArtifacts 'build/libs/*.jar'
       }
     }
+
 
     stage('Deploy') {
+       
       steps {
         bat 'gradle publish'
+        notifyEvents message:'Déploiement avec succès', token: 'HOEOr4tfxF2jQnspzWrTo5hk1rLy1yVZ'
+        mail(subject: 'Déploiement notifications', body: 'Déploiement avec succès', cc: 'js_zitouni@esi.dz',from:'js_zitouni@esi.dz',to:'js_zitouni@esi.dz')
       }
     }
 
-    stage('Slack Notification') {
+    stage('Notification') {
+     
       steps {
-        slackSend(token: 'TSGEF9MGR/B04EKU8G31A/1s4jywo6tECegVgcgnVM5qIz', baseUrl: 'https://hooks.slack.com/services/', channel: '#my_channel', message: 'notification for JenkinsOGL has been successfully sent to slack')
+        mail(subject: 'Pipeline Notifications', body: mail, cc: 'js_zitouni@esi.dz')
       }
     }
-
+             
   }
-  environment {
+environment {
     mail = ''
   }
 }
