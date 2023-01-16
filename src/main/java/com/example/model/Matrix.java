@@ -99,5 +99,9 @@ public class Matrix {
 	return  true;
 
 	}
+	
+	 public int hashCode() {
+         /* ... */
+         }
 
 }
