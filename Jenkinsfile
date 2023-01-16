@@ -21,7 +21,7 @@ pipeline {
       }
       steps {
         junit(testResults: 'build/test-results/test/*.xml', skipPublishingChecks: true, allowEmptyResults: true)
-        cucumber 'reports/*json'
+        cucumber 'reports/*.json'
       }
     }
 
