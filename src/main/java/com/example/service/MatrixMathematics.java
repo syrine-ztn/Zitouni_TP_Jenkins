@@ -126,12 +126,6 @@ public class MatrixMathematics {
 	}
 
 
-	public  void test() {
-
-	}
-
-
-
 
 	
 	
