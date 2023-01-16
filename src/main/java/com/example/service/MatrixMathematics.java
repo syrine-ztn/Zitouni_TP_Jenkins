@@ -119,7 +119,7 @@ public class MatrixMathematics {
 		if (det!=0) {
 		return (transpose(cofactor(matrix)).multiplyByConstant(1.0/det));
 		} else {
-		 return matrix;	
+		 return (transpose(cofactor(matrix)).multiplyByConstant(1.0));
 		}
 	}
 
