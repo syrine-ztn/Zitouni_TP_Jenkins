@@ -101,7 +101,8 @@ public class Matrix {
 	}
 	
 	 public int hashCode() {
-         /* ... */
+         int result = super.hashCode();
+         return result;
          }
 
 }
